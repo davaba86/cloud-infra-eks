@@ -1,0 +1,168 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: micro-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.org/rewrites: "serviceName=apache-svc rewrite=/"
+spec:
+  rules:
+  - host: web1.changeme.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: web1
+            port:
+              number: 80
+  - host: metrics.changeme.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: metrics-kube-prometheus-st-prometheus
+            port:
+              number: 9090
+  - host: dashboard.changeme.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: metrics-grafana
+            port:
+              number: 80
+  - host: db1-exporter.changeme.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: db1-prometheus-postgres-exporter
+            port:
+              number: 80
+  - host: db2-exporter.changeme.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: db2-prometheus-mongodb-exporter
+            port:
+              number: 9216
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web1
+  template:
+    metadata:
+      labels:
+        app: web1
+    spec:
+      containers:
+      - name: web1
+        image: nginxdemos/hello:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web1
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: web1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db1
+  labels:
+    app: db1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db1
+  template:
+    metadata:
+      labels:
+        app: db1
+    spec:
+      containers:
+      - name: db1
+        image: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: ChangeMeNow2022!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db1
+spec:
+  selector:
+    app: db1
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db2
+  labels:
+    app: db2
+    app.kubernetes.io/instance: mongbdb-exorter
+    app.kubernetes.io/name: prometheus-mongodb-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db2
+  template:
+    metadata:
+      labels:
+        app: db2
+    spec:
+      containers:
+      - name: db2
+        image: mongo
+        ports:
+        - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db2
+spec:
+  selector:
+    app: db2
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017 
+---
