@@ -38,8 +38,8 @@ This assumes you've:
    gsed -i "s|my_public_ip/cidr|9.9.9.9/32|g" ingress-nginx-values.yml
 
    # Use your own and managed domain
-   gsed -i "s|my_domain|myowndomain.com|g" ingress-apps.yml
-   gsed -i "s|my_domain|myowndomain.com|g" ingress-apps.tf
+   gsed -i "s|my_domain|myowndomain\.com|g" ingress-apps.yml
+   gsed -i "s|my_domain|myowndomain\.com|g" ingress-apps.tf
 
    # Use your own Route53 DNS Zone ID
    gsed -i "s|my_dns_zone_id|7W34Y5FB34757348G5G63|g" ingress-apps.tf
