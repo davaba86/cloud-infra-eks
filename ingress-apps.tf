@@ -3,7 +3,7 @@ variable "cluster_lb" {
   default     = "aws_lb_dns"
 }
 
-variable "my_domain" {
+variable "domain" {
   description = "Your own domain, for eg. Route53."
   default     = "my_domain"
 }
@@ -15,7 +15,7 @@ variable "my_zone" {
 
 resource "aws_route53_record" "app_web1" {
   zone_id = var.my_zone
-  name    = "web1.${var.my_domain}"
+  name    = "web1.${var.domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [var.cluster_lb]
@@ -23,7 +23,7 @@ resource "aws_route53_record" "app_web1" {
 
 resource "aws_route53_record" "app_metrics" {
   zone_id = var.my_zone
-  name    = "metrics.${var.my_domain}"
+  name    = "metrics.${var.domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [var.cluster_lb]
@@ -31,7 +31,7 @@ resource "aws_route53_record" "app_metrics" {
 
 resource "aws_route53_record" "app_dashboard" {
   zone_id = var.my_zone
-  name    = "dashboard.${var.my_domain}"
+  name    = "dashboard.${var.domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [var.cluster_lb]
@@ -39,7 +39,7 @@ resource "aws_route53_record" "app_dashboard" {
 
 resource "aws_route53_record" "app_db1_exporter" {
   zone_id = var.my_zone
-  name    = "db1-exporter.${var.my_domain}"
+  name    = "db1-exporter.${var.domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [var.cluster_lb]
@@ -47,7 +47,7 @@ resource "aws_route53_record" "app_db1_exporter" {
 
 resource "aws_route53_record" "app_db2_exporter" {
   zone_id = var.my_zone
-  name    = "db2-exporter.${var.my_domain}"
+  name    = "db2-exporter.${var.domain}"
   type    = "CNAME"
   ttl     = "60"
   records = [var.cluster_lb]
