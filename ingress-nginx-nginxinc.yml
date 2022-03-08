@@ -219,7 +219,7 @@ metadata:
   name: nginx-ingress
   namespace: nginx-ingress
   annotations:
-    service.beta.kubernetes.io/load-balancer-source-ranges: my_public_ip
+    service.beta.kubernetes.io/load-balancer-source-ranges: my_public_ip/cidr
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
     service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
 spec:
