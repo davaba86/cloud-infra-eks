@@ -82,11 +82,14 @@ This assumes you've:
    ```bash
    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
    helm repo update
-   helm install db1 prometheus-community/prometheus-postgres-exporter -f helm-db-exporter.yml
+   helm install db1 prometheus-community/prometheus-postgres-exporter -f helm-db1-exporter.yml
    helm install db2 prometheus-community/prometheus-mongodb-exporter -f helm-db2-exporter.yml
+   helm install metrics prometheus-community/kube-prometheus-stack --version "33.2.0"
    ```
 
 ## Verification
+
+> Please be aware that it may take a few minutes (1-5) before the DNS records start working properly, even if all resources are up.
 
 1. Check ingress and ensure that host row (except web1) has one backend IP and port listed like below.
 
