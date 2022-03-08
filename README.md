@@ -35,7 +35,7 @@ This assumes you've:
 
    ```bash
    # Use your own Public IP to secure your lab env
-   gsed -i "s|my_public_ip/cidr|9.9.9.9/32|g" ingress-nginx-nginxinc.yml
+   gsed -i "s|my_public_ip/cidr|9.9.9.9/32|g" ingress-nginx-values.yml
 
    # Use your own and managed domain
    gsed -i "s|my_domain|myowndomain.com|g" ingress-apps.yml
@@ -52,8 +52,12 @@ This assumes you've:
 4. Provision your kubernetes env.
 
    ```bash
-   # Apply the k8s ingress-nginx
-   kubectl apply -f ingress-nginx-nginxinc.yml
+   # Install Ingress Nginx Controller from Kubernetes organisation
+   helm upgrade --repo https://kubernetes.github.io/ingress-nginx \
+      --values ingress-nginx-values.yaml \
+      --namespace ingress-nginx \
+      --create-namespace \
+      --install ingress-nginx ingress-nginx
 
    # Provision k8s apps
    kubectl apply -f ingress-apps.yml
