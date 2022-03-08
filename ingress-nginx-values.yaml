@@ -1,0 +1,4 @@
+controller:
+  service:
+    annotations:
+      service.beta.kubernetes.io/load-balancer-source-ranges: my_public_ip/cidr
