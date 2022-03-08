@@ -2,6 +2,6 @@ config:
   datasource:
     host: db1:5432
     user: postgres
-    password: ChangeMeNow2022!
+    password: my_db_password
     port: 5432
     database: ''

@@ -1,16 +1,16 @@
 variable "cluster_lb" {
   description = "AWS LB DNS which is generated once the svc nginx-ingress is created."
-  default     = "changeme.elb.amazonaws.com"
+  default     = "aws_lb_dns"
 }
 
 variable "my_domain" {
   description = "Your own domain, for eg. Route53."
-  default     = "changeme.com"
+  default     = "my_domain"
 }
 
 variable "my_zone" {
   description = "Your own Route53 domain zone ID."
-  default     = "7W34Y5FB34757348G5G63"
+  default     = "my_dns_zone_id"
 }
 
 resource "aws_route53_record" "app_web1" {
